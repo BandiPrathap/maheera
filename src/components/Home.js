@@ -1,10 +1,11 @@
-import React from "react";
-import { FaCalendarAlt, FaCreditCard, FaBook, FaCheckCircle } from "react-icons/fa";
+import React, { useState } from "react";
+import { FaCalendarAlt, FaCreditCard, FaBook, FaCheckCircle, FaCommentDots, FaRobot } from "react-icons/fa";
+import Chatbot from "./Chatbot"; // Import your Chatbot component
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const teamMembers = [
   { name: "Prathap", role: "Lead Developer", img: "https://via.placeholder.com/100" },
   { name: "Alice", role: "Data Scientist", img: "https://via.placeholder.com/100" },
-  { name: "Bob", role: "Backend Engineer", img: "https://via.placeholder.com/100" },
   { name: "Bob", role: "Backend Engineer", img: "https://via.placeholder.com/100" },
 ];
 
@@ -16,13 +17,26 @@ const features = [
 ];
 
 export default function Home() {
+  const [showChatbot, setShowChatbot] = useState(false);
+
   return (
     <div className="container py-5">
       {/* Hero Section */}
       <div className="text-center bg-primary text-white p-5 rounded">
         <h1 className="display-4 fw-bold">Maheera Chatbot Assistant</h1>
         <p className="lead mt-2">Providing university-related information at your fingertips.</p>
-        <button className="btn btn-light text-primary mt-3">Explore Chatbot</button>
+        
+        <div className="mt-3">
+          {/* Open Chatbot Modal */}
+          <button className="btn btn-light text-primary me-3" onClick={() => setShowChatbot(true)}>
+            <FaCommentDots className="me-2" /> Chat Now
+          </button>
+
+          {/* Redirect to Telegram Bot */}
+          <a href="https://t.me/Pothuraju_bot" target="_blank" rel="noopener noreferrer" className="btn btn-outline-light">
+            <FaRobot className="me-2" /> Chat with Telegram Bot
+          </a>
+        </div>
       </div>
 
       {/* Features Section */}
@@ -37,7 +51,6 @@ export default function Home() {
           </div>
         ))}
       </div>
-
 
       {/* Team Section */}
       <div className="mt-5 text-center">
@@ -60,6 +73,26 @@ export default function Home() {
         <h2 className="h5 fw-bold">Need Help?</h2>
         <p className="text-muted">Contact us at support@unibot.com</p>
       </div>
+
+      {/* Chatbot Popup (Bootstrap Modal) */}
+      {showChatbot && (
+        <div className="modal fade show d-block" tabIndex="-1" role="dialog">
+          <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">Chatbot</h5>
+                <button type="button" className="btn-close" onClick={() => setShowChatbot(false)}></button>
+              </div>
+              <div className="modal-body">
+                <Chatbot />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal Backdrop */}
+      {showChatbot && <div className="modal-backdrop fade show" onClick={() => setShowChatbot(false)}></div>}
     </div>
   );
 }

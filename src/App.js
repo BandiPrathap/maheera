@@ -4,6 +4,7 @@ import Sidebar from "./components/Sidebar";
 import Home from "./components/Home";
 import StudentManagement from "./pages/StudentManagement";
 import UserInteractions from "./components/UserInteractions";
+import Chatbot from "./components/Chatbot";
 import ImportantDates from "./pages/ImportantDates";
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -18,6 +19,7 @@ function App() {
             <Route path="/students" element={<StudentManagement />} />
             <Route path="/interactions" element={<UserInteractions />} />
             <Route path="/dates" element={<ImportantDates />} />
+            <Route path = "/chatbot" element = {<Chatbot/>}/>
           </Routes>
         </div>
       </div>
