@@ -33,10 +33,15 @@ const StudentManagement = () => {
   useEffect(() => {
     const token = localStorage.getItem("adminToken");
     if (token) {
-      setIsAdmin(true);
-      loadStudents();
+        loadStudents();
     }
   }, []);
+
+    useEffect(() => {
+      if (isAdmin) {
+        loadStudents();
+      }
+    }, [isAdmin]);
 
   const loadStudents = async () => {
     setLoading(true);
