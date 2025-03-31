@@ -7,16 +7,27 @@ import NotifyButton from "../components/NotifyButton";
 import { fetchEvents, addEvent, updateEvent, deleteEvent } from "../api/events";
 import EventList from "../components/EventList";
 import EventModal from "../components/EventModal";
+import Login from "../components/Login";
 
 const ImportantDates = () => {
   const [dates, setDates] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [editing, setEditing] = useState(null);
   const [eventData, setEventData] = useState({ event_name: "", event_date: "" });
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    loadEvents();
+    const token = localStorage.getItem("adminToken");
+    if (token) {
+      setIsAdmin(true);
+    }
   }, []);
+
+  useEffect(() => {
+    if (isAdmin) {
+      loadEvents();
+    }
+  }, [isAdmin]);
 
   const loadEvents = async () => {
     try {
@@ -44,12 +55,15 @@ const ImportantDates = () => {
     try {
       if (editing !== null) {
         await updateEvent(editing, eventData);
+        setDates((prevDates) =>
+          prevDates.map((d) => (d.id === editing ? { ...d, ...eventData } : d))
+        );
         toast.success("Event updated successfully!");
       } else {
-        await addEvent(eventData);
+        const newEvent = await addEvent(eventData);
+        setDates((prevDates) => [...prevDates, newEvent]);
         toast.success("Event added successfully!");
       }
-      loadEvents();
       handleClose();
     } catch (error) {
       console.error("Error saving event:", error);
@@ -69,7 +83,7 @@ const ImportantDates = () => {
   const handleDelete = async (id) => {
     try {
       await deleteEvent(id);
-      loadEvents();
+      setDates((prevDates) => prevDates.filter((d) => d.id !== id));
       toast.info("Event deleted successfully!");
     } catch (error) {
       console.error("Error deleting event:", error);
@@ -77,15 +91,26 @@ const ImportantDates = () => {
     }
   };
 
-  return (
+  const handleAdminLogout = () => {
+    localStorage.removeItem("adminToken");
+    setIsAdmin(false);
+  };
+
+  return !isAdmin ? (
+    <Login setIsAdmin={setIsAdmin}/>
+  ) : (
     <div className="container mt-4">
-      <h2>Important Dates</h2>
+      <div className="d-flex justify-content-between align-items-center mb-3">
+        <h2>Important Dates</h2>
+        <button className="btn btn-danger mb-3" onClick={handleAdminLogout}>
+          Logout
+        </button>
+      </div>
       <div className="mb-3">
-        <Button variant="primary" className="m" onClick={handleShow}>
+        <Button variant="primary" className="me-2" onClick={handleShow}>
           Add New Date
         </Button>
-        <span>          </span>
-        <NotifyButton/>
+        <NotifyButton />
       </div>
 
       <EventList dates={dates} onEdit={handleEdit} onDelete={handleDelete} />

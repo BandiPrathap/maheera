@@ -1,17 +1,22 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { FaHome, FaUsers, FaComments, FaCalendarAlt } from "react-icons/fa";
+import { FaHome, FaUsers, FaComments, FaCalendarAlt,FaBook } from "react-icons/fa";
 import "./Sidebar.css";
 
 const Sidebar = () => {
   return (
     <div className="sidebar">
-      <h4 className="text-center py-3 mb-0">Maheera</h4>
+      <h4 className="text-center py-3 mb-0">Menu</h4>
       <p className="text-center">Chatbot Management Platform</p>
       <ul className="nav flex-column">
         <li className="nav-item">
           <Link className="nav-link" to="/">
             <FaHome className="me-2" /> Home
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link className="nav-link" to="/guide">
+          <FaBook className="me-2" /> Guide
           </Link>
         </li>
         <li className="nav-item">

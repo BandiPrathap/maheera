@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Table, Spinner, Alert } from "react-bootstrap";
 import axios from "axios";
+import Login from "./Login";
 
 const UserInteractions = () => {
   const [interactions, setInteractions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     const fetchInteractions = async () => {
@@ -23,9 +25,25 @@ const UserInteractions = () => {
     fetchInteractions();
   }, []);
 
+      useEffect(() => {
+        const token = localStorage.getItem("adminToken");
+        if (token) {
+          setIsAdmin(true);
+        }
+      }, []);
+
+  const handleAdminLogout = () => {
+    localStorage.removeItem("adminToken");
+    setIsAdmin(false);
+  };
+
   return (
+    !isAdmin ? <Login setIsAdmin={setIsAdmin} />:
     <div>
-      <h2>User Interactions</h2>
+      <div className="d-flex justify-content-between align-items-center mb-3">
+        <h2>User Interactions</h2>
+        <button className="btn btn-danger" onClick={handleAdminLogout}>Logout</button>
+      </div>
       {loading && <Spinner animation="border" />}
       {error && <Alert variant="danger">{error}</Alert>}
       {!loading && !error && (

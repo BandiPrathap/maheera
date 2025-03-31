@@ -7,6 +7,9 @@ import UserInteractions from "./components/UserInteractions";
 import Chatbot from "./components/Chatbot";
 import ImportantDates from "./pages/ImportantDates";
 import "bootstrap/dist/css/bootstrap.min.css";
+import Guide from "./guide/Guide";
+import AdminDoc from "./guide/AdminDoc";
+import UserDoc from "./guide/UserDoc";
 
 function App() {
   return (
@@ -20,6 +23,9 @@ function App() {
             <Route path="/interactions" element={<UserInteractions />} />
             <Route path="/dates" element={<ImportantDates />} />
             <Route path = "/chatbot" element = {<Chatbot/>}/>
+            <Route path = "/guide" element = {<Guide />}/>
+            <Route path = "/guide/admin-doc" element = {<AdminDoc />}/>
+            <Route path = "/guide/user-doc" element = {<UserDoc />}/>
           </Routes>
         </div>
       </div>
